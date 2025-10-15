@@ -14,7 +14,7 @@ Obiective:
 
 -Oferirea unei platforme moderne pentru prezentarea și vânzarea produselor.
 
--Automatizarea proceselor de comandă și plată.
+-Automatizarea proceselor de comandă.
 
 -Gestionarea centralizată a stocurilor și a comenzilor.
 
