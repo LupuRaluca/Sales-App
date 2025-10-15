@@ -8,7 +8,7 @@ Sales App for SIA  Multistrat12
   
 
 ## Descriere App
-Aplicație web pentru un magazin online care permite gestionarea și vânzarea produselor. Platforma oferă funcționalități pentru administratori (gestiune produse, comenzi, utilizatori) și pentru clienți (navigare produse, coș de cumpărături, finalizare comenzi).
+Aplicație web pentru un magazin online de componente hardware care permite gestionarea și vânzarea produselor. Platforma oferă funcționalități pentru administratori (gestiune produse, comenzi, utilizatori) și pentru clienți (navigare produse, coș de cumpărături, finalizare comenzi).
 
 Obiective:
 
