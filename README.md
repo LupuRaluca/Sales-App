@@ -31,7 +31,7 @@ Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta perf
            
 -backend:  -Java + Spring Boot: framework  pentru aplicații web RESTful.
 	       -Spring Data JPA + Hibernate:	acces și mapare obiect-relațională la baza de date.
-	       -Spring Security / JWT:	autentificare și autorizare sigură pentru utilizatori.
+	       -Spring Security :	autentificare și autorizare sigură pentru utilizatori.
 	       -Lombok:	reduce codul boilerplate (getters, setters etc.).
 	       -Maven:	management al dependențelor și build-ului.
 
