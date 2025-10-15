@@ -26,7 +26,7 @@ Fiecare modul (ex: utilizatori, produse, comenzi) funcționează ca un serviciu 
 
 
 ## Stack tehnologic
-Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta performanță, scalabilitate și ușurință în mentenanță:
+Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta performanță și ușurință în mentenanță:
 
 -frontend:  -React: Framework  pentru interfețe dinamice, component-based.
 	        -Vite / Create React App:	tool pentru inițializarea și build-ul rapid al aplicației.
