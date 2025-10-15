@@ -20,6 +20,9 @@ Obiective:
 
 -Crearea unei experiențe plăcute pentru utilizatori printr-un UI intuitiv.
 
+## Arhitectura
+Noi am ales arhitectura pe bază de servicii (microservicii), deoarece permite o separare clară a responsabilităților, scalabilitate independentă și mentenanță ușoară.
+Fiecare modul (ex: utilizatori, produse, comenzi) funcționează ca un serviciu distinct, comunicând prin API-uri REST, ceea ce oferă flexibilitate și posibilitatea extinderii rapide a sistemului.
 
 
 ## Stack tehnologic
