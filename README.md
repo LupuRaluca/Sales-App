@@ -1,12 +1,14 @@
 # Sales-App
 Sales App for SIA  Multistrat12
 
-1. Membrii echipei:
+## Echipa
 - Paun Marius - developer full-stack, tester.
 - Ciobanu Rares - developer front-end , project manager.
 - Lupu Raluca - developer back-end , analist.
+- 
 
-2.Aplicație web pentru un magazin online care permite gestionarea și vânzarea produselor. Platforma oferă funcționalități pentru administratori (gestiune produse, comenzi, utilizatori) și pentru clienți (navigare produse, coș de cumpărături, finalizare comenzi).
+## Descriere App
+Aplicație web pentru un magazin online care permite gestionarea și vânzarea produselor. Platforma oferă funcționalități pentru administratori (gestiune produse, comenzi, utilizatori) și pentru clienți (navigare produse, coș de cumpărături, finalizare comenzi).
 
 Obiective:
 
@@ -20,12 +22,21 @@ Obiective:
 
 
 
-4. Stack-ul tehnologic
+## Stack tehnologic
 Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta performanță, scalabilitate și ușurință în mentenanță:
 
--frontend: React - pentru construirea interfeței de utilizator, bazată pe componente independente și reactive.
--backend:  Java, Spring Boot, Lombok - pentru logica aplicației și gestionarea cererilor client-server.
--baza de date: Postgres - pentru stocarea sigură a informațiilor despre produse, utilizatori și comenzi.
+-frontend: React: Framework  pentru interfețe dinamice, component-based.
+	         Vite / Create React App:	tool pentru inițializarea și build-ul rapid al aplicației.
+	         React Router:	navigare între pagini fără reîncărcare completă.
+           
+-backend:  Java + Spring Boot: framework  pentru aplicații web RESTful.
+	         Spring Data JPA + Hibernate:	acces și mapare obiect-relațională la baza de date.
+	         Spring Security / JWT:	autentificare și autorizare sigură pentru utilizatori.
+	         Lombok:	reduce codul boilerplate (getters, setters etc.).
+	         Maven:	management al dependențelor și build-ului.
+
+-baza de date: Postgres - pentru stocarea informațiilor despre produse, utilizatori și comenzi.
+
 -sistem de versionare: GitHub- versiunilor codului sursă și colaborarea între membri echipei.
 
 
