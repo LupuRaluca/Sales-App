@@ -21,8 +21,9 @@ Obiective:
 -Crearea unei experiențe plăcute pentru utilizatori printr-un UI intuitiv.
 
 ## Arhitectura
-Noi am ales arhitectura pe bază de servicii (microservicii), deoarece permite o separare clară a responsabilităților, scalabilitate independentă și mentenanță ușoară.
-Fiecare modul (ex: utilizatori, produse, comenzi) funcționează ca un serviciu distinct, comunicând prin API-uri REST, ceea ce oferă flexibilitate și posibilitatea extinderii rapide a sistemului.
+Am ales arhitectura monolitică modulară, deoarece oferă o structură unitară a aplicației, menținând totodată o separare clară a responsabilităților între module.
+
+Fiecare componentă (ex: utilizatori, produse, comenzi) este organizată ca modul intern distinct, ceea ce facilitează mentenanța, extinderea și înțelegerea sistemului, fără complexitatea suplimentară a comunicării între servicii.
 
 
 ## Stack tehnologic
