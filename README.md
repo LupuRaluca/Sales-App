@@ -12,13 +12,13 @@ Aplicație web pentru un magazin online de componente hardware care permite gest
 
 Obiective:
 
--Oferirea unei platforme moderne pentru prezentarea și vânzarea produselor.
+- Oferirea unei platforme moderne pentru prezentarea și vânzarea produselor.
 
--Automatizarea proceselor de comandă.
+- Automatizarea proceselor de comandă.
 
--Gestionarea centralizată a stocurilor și a comenzilor.
+- Gestionarea centralizată a stocurilor și a comenzilor.
 
--Crearea unei experiențe plăcute pentru utilizatori printr-un UI intuitiv.
+- Crearea unei experiențe plăcute pentru utilizatori printr-un UI intuitiv.
 
 ## Arhitectura
 Am ales arhitectura monolitică modulară, deoarece oferă o structură unitară a aplicației, menținând totodată o separare clară a responsabilităților între module.
@@ -29,21 +29,25 @@ Fiecare componentă (ex: utilizatori, produse, comenzi) este organizată ca modu
 ## Stack tehnologic
 Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta performanță și ușurință în mentenanță:
 
--frontend:  -React: Framework  pentru interfețe dinamice, component-based.
-	        -Vite / Create React App:	tool pentru inițializarea și build-ul rapid al aplicației.
-	        -React Router:	navigare între pagini fără reîncărcare completă.
+### Frontend:
+- React: Framework  pentru interfețe dinamice, component-based.
+- Vite / Create React App:	tool pentru inițializarea și build-ul rapid al aplicației.
+- React Router:	navigare între pagini fără reîncărcare completă.
            
--backend:  -Java + Spring Boot: framework  pentru aplicații web RESTful.
-	       -Spring Data JPA + Hibernate:	acces și mapare obiect-relațională la baza de date.
-	       -Spring Security :	autentificare și autorizare sigură pentru utilizatori.
-	       -Lombok:	reduce codul boilerplate (getters, setters, constructori).
-	       -Maven:	management al dependențelor și build-ului.
+### Backend:  
+- Java + Spring Boot: framework  pentru aplicații web RESTful.
+- Spring Data JPA + Hibernate:	acces și mapare obiect-relațională la baza de date.
+- Spring Security :	autentificare și autorizare sigură pentru utilizatori.
+- Lombok:	reduce codul boilerplate (getters, setters, constructori).
+- Maven:	management al dependențelor și build-ului.
 
--baza de date: Postgres - pentru stocarea informațiilor despre produse, utilizatori și comenzi.
+### Baza de date: 
+- Postgres - pentru stocarea informațiilor despre produse, utilizatori și comenzi.
+### Sistem de versionare: 
+- GitHub - versiunilor codului sursă și colaborarea între membri echipei.
 
--sistem de versionare: GitHub- versiunilor codului sursă și colaborarea între membri echipei.
 
-
+## Backlog inițial
 
 
 
