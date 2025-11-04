@@ -76,7 +76,7 @@ Aplicația utilizează un set de tehnologii moderne, alese pentru a garanta perf
     Then produsul apare în lista de produse active
     And produsul este vizibil în catalogul public
 
-  Scenario: Prevenire cod-produs duplicat
+  Scenario: Prevenire SKU duplicat
     Given există un produs cu codul "4070"
     And sunt autentificat ca administrator
     When încerc să creez un produs cu același cod
