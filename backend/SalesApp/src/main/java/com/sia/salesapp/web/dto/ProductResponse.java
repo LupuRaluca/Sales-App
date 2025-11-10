@@ -8,10 +8,11 @@ public record ProductResponse(
         String name,
         String description,
         Long brandId,
-        String brandName,
+        String brandName,     // util în listări/detalii
         Long categoryId,
-        String categoryName,
+        String categoryName,  // util în listări/detalii
         BigDecimal price,
         String currency,
-        BigDecimal vatRate
+        BigDecimal vatRate,
+        Integer inventoryQuantityAvailable // poate fi null dacă nu există încă rând în inventory
 ) { }

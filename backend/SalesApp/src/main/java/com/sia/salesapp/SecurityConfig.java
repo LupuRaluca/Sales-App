@@ -1,3 +1,4 @@
+//securityConfig.java
 package com.sia.salesapp;
 
 import org.springframework.context.annotation.Bean;
@@ -14,8 +15,9 @@ public class SecurityConfig {
     SecurityFilterChain security(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
         return http.build();

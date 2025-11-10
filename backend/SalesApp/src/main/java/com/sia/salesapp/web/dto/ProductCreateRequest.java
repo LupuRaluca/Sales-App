@@ -1,19 +1,15 @@
 package com.sia.salesapp.web.dto;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
-
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
 public record ProductCreateRequest(
         @NotBlank String sku,
         @NotBlank String name,
         @NotBlank String description,
-        Long brandId,
-        Long categoryId,
-        @PositiveOrZero BigDecimal price,
-        @NotBlank String currency,
-        @DecimalMin("0.00") @DecimalMax("99.99") BigDecimal vatRate
+        @NotNull Long brandId,
+        @NotNull Long categoryId,
+        @NotNull @PositiveOrZero BigDecimal price,
+        @NotBlank @Size(min = 3, max = 3) String currency,
+        @NotNull @DecimalMin("0.00") @DecimalMax("99.99") BigDecimal vatRate
 ) { }
