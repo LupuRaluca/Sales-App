@@ -8,17 +8,16 @@ import org.springframework.stereotype.Component;
 public class InventoryValidator {
 
     public void validateCreate(Product product, Integer quantityAvailable, boolean inventoryAlreadyExists) {
-        if (product == null) throw new BusinessValidationException("Produs inexistent.");
+        if (product == null) throw new BusinessValidationException("Produsul nu exista");
         if (quantityAvailable == null || quantityAvailable < 0)
-            throw new BusinessValidationException("Cantitatea inițială trebuie să fie ≥ 0.");
+            throw new BusinessValidationException("Cantitatea trebuie sa fie ≥ 0");
         if (inventoryAlreadyExists)
-            throw new BusinessValidationException("Există deja inventory pentru acest produs.");
+            throw new BusinessValidationException("Exista deja inventory pentru produs");
     }
 
     public void validateAdjust(Product product, int delta, int currentQty) {
-        if (product == null) throw new BusinessValidationException("Produs inexistent.");
-        // dacă scădem, să nu ajungem sub 0
+        if (product == null) throw new BusinessValidationException("Produsul nu exista");
         if (delta < 0 && currentQty + delta < 0)
-            throw new BusinessValidationException("Stoc insuficient pentru scădere.");
+            throw new BusinessValidationException("Stoc insuficient pentru scadere");
     }
 }

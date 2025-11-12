@@ -20,19 +20,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-/**
- * Clasă de test unitar pentru BrandServiceImpl.
- * Folosește Mockito pentru a izola dependența de BrandRepository.
- */
 @ExtendWith(MockitoExtension.class) // Inițializează mock-urile definite cu @Mock
 class BrandServiceImplTest {
 
-    // 1. Definim Mock-ul
+    // 1 Definim Mock-ul
     // Acesta este obiectul pe care îl vom controla (dependința)
     @Mock
     private BrandRepository brandRepository;
 
-    // 2. Definim Clasa Sub Test
+    // 2 Definim Clasa Sub Test
     // Mock-ul de mai sus (brandRepository) va fi injectat automat în această instanță
     @InjectMocks
     private BrandServiceImpl brandService;

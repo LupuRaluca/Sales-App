@@ -17,12 +17,11 @@ public class ProductWorkflowService {
     private final ProductRepository productRepo;
     private final BrandRepository brandRepo;
     private final CategoryRepository categoryRepo;
-    private final InventoryRepository inventoryRepo;
 
     private final ProductValidator productValidator;
     private final InventoryValidator inventoryValidator;
 
-    /** Create product + init inventory (un singur pas, invariant asigurat) */
+    /** Create product + init inventory*/
     @Transactional
     public ProductResponse createProductWithInventory(ProductCreateRequest req, int initialQty) {
         productValidator.assertSkuUniqueOnCreate(req.sku());
@@ -56,11 +55,11 @@ public class ProductWorkflowService {
 
         inventoryValidator.validateCreate(p, initialQty, false);
 
-        p = productRepo.save(p); // cascade salvează și inventory
+        p = productRepo.save(p); // cascade salvează si inventory
         return toDto(p);
     }
 
-    /** Ajustare simplă de stoc (+/-), cu regulă de non-negativ */
+    /** Ajustare simpla de stoc (+/-), cu regula de non-negativ */
     @Transactional
     public void adjustStock(Long productId, int delta) {
         Product p = productRepo.findByIdWithRelations(productId)
