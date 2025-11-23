@@ -1,11 +1,17 @@
+
+// src/main/java/com/sia/salesapp/web/dto/PaymentResponse.java
 package com.sia.salesapp.web.dto;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
+
 public record PaymentResponse(
         Long id,
-        LocalDate paymentDate,
+        String provider,
+        String status,
         BigDecimal amount,
-        String method,
+        String currency,
+        String transactionRef,
+        Instant createdAt,
         Long orderId
-) {
-}
+) {}

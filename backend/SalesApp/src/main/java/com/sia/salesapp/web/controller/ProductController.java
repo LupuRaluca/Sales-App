@@ -1,7 +1,7 @@
 package com.sia.salesapp.web.controller;
 
 import com.sia.salesapp.application.iServices.ProductService;
-import com.sia.salesapp.application.workflowServices.ProductWorkflowService;
+import com.sia.salesapp.application.extendedServices.ProductWorkflowService;
 import com.sia.salesapp.web.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,22 +46,12 @@ public class ProductController {
         productService.delete(id);
     }
 
-    // -------- WORKFLOW (use-cases cross-entity) --------
-
-    /**
-     * Creează produsul și setează stocul inițial într-o singură tranzacție.
-     * Exemplu: POST /api/products/workflow/create-with-inventory?qty=10
-     */
     @PostMapping("/workflow/create-with-inventory")
     public ProductResponse createWithInventory(@Valid @RequestBody ProductCreateRequest req,
                                                @RequestParam(name = "qty", defaultValue = "0") int qty) {
         return workflowService.createProductWithInventory(req, qty);
     }
 
-    /**
-     * Ajustează stocul (pozitiv sau negativ). Nu permite stoc negativ.
-     * Exemplu: POST /api/products/{id}/workflow/adjust-stock?delta=-3
-     */
     @PostMapping("/{id}/workflow/adjust-stock")
     public void adjustStock(@PathVariable Long id,
                             @RequestParam(name = "delta") int delta) {

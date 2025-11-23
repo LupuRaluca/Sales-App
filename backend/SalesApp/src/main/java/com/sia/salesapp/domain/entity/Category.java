@@ -1,3 +1,4 @@
+//category.java
 package com.sia.salesapp.domain.entity;
 
 import jakarta.persistence.*;

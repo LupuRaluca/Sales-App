@@ -52,7 +52,6 @@ public class ProductServiceImpl implements ProductService {
         Product p = productRepo.findByIdWithRelations(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produs inexistent"));
 
-        // SKU NU se schimbă aici (nu este în UpdateRequest). Dacă vrei update de SKU, faci endpoint dedicat.
         applyFromUpdate(p, req);
         p = productRepo.save(p);
         return toDto(p);

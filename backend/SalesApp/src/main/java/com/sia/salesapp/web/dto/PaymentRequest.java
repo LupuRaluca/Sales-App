@@ -1,10 +1,14 @@
+
+// src/main/java/com/sia/salesapp/web/dto/PaymentRequest.java
 package com.sia.salesapp.web.dto;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
+
 public record PaymentRequest(
-        LocalDate paymentDate,
+        String provider,       // ex: "STRIPE", "PAYPAL", "NETOPIA", "DUMMY"
+        String status,         // ex: "INITIATED", "AUTHORIZED", "CAPTURED", "FAILED", "REFUNDED"
         BigDecimal amount,
-        String method,
+        String currency,       // opțional; dacă e null sau gol → "RON"
+        String transactionRef, // opțional
         Long orderId
-) {
-}
+) {}

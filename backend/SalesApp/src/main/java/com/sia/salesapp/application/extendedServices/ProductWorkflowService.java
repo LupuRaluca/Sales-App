@@ -1,4 +1,4 @@
-package com.sia.salesapp.application.workflowServices;
+package com.sia.salesapp.application.extendedServices;
 
 import com.sia.salesapp.domain.entity.*;
 import com.sia.salesapp.domain.validation.InventoryValidator;
@@ -21,7 +21,6 @@ public class ProductWorkflowService {
     private final ProductValidator productValidator;
     private final InventoryValidator inventoryValidator;
 
-    /** Create product + init inventory*/
     @Transactional
     public ProductResponse createProductWithInventory(ProductCreateRequest req, int initialQty) {
         productValidator.assertSkuUniqueOnCreate(req.sku());
@@ -59,7 +58,7 @@ public class ProductWorkflowService {
         return toDto(p);
     }
 
-    /** Ajustare simpla de stoc (+/-), cu regula de non-negativ */
+
     @Transactional
     public void adjustStock(Long productId, int delta) {
         Product p = productRepo.findByIdWithRelations(productId)

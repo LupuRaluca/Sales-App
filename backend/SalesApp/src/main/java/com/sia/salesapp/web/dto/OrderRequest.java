@@ -1,9 +1,17 @@
+
+// OrderRequest.java
 package com.sia.salesapp.web.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-public record OrderRequest(LocalDate orderDate,
-                           String status,
-                           BigDecimal totalAmount) {
-}
+public record OrderRequest(
+        String status,          // va fi convertit în enum
+        BigDecimal subtotal,
+        BigDecimal shippingFee,
+        BigDecimal taxTotal,
+        BigDecimal grandTotal,
+        String currency,
+        String shippingFullName,
+        String shippingPhone,
+        String shippingAddress
+) {}
