@@ -30,6 +30,7 @@ INSERT INTO categories (name, description) VALUES
                                                ('Networking', 'Routers, switches, adapters')
 ON CONFLICT (name) DO NOTHING;
 
+-- PRODUCTS
 INSERT INTO products
 (sku, name, description, brand_id, category_id, price, currency, vat_rate, created_at, updated_at)
 VALUES
@@ -134,11 +135,10 @@ VALUES
  (SELECT id FROM brands WHERE name='Samsung'),
  (SELECT id FROM categories WHERE name='Storage'),
  220.00, 'RON', 19.00, NOW(), NOW())
-    ON CONFLICT (sku) DO NOTHING;
+ON CONFLICT (sku) DO NOTHING;
 
--- =========================
--- INVENTORY (upsert per SKU)
--- =========================
+
+-- INVENTORY
 -- CPUs
 INSERT INTO inventory (product_id, quantity_available, created_at, updated_at)
 SELECT id, 40, NOW(), NOW() FROM products WHERE sku = 'SKU-CPU-INTEL-12400F'
@@ -213,3 +213,113 @@ ON CONFLICT (product_id) DO UPDATE SET quantity_available = EXCLUDED.quantity_av
 INSERT INTO inventory (product_id, quantity_available, created_at, updated_at)
 SELECT id, 50, NOW(), NOW() FROM products WHERE sku = 'SKU-SSD-SAMS-980-500'
 ON CONFLICT (product_id) DO UPDATE SET quantity_available = EXCLUDED.quantity_available, updated_at = NOW();
+
+
+-- USERS
+INSERT INTO users (username, first_name, last_name, phone, email, password, role, created_at, updated_at)
+VALUES
+    ('admin', 'Admin', 'User', '+40123456789', 'admin@shopdemo.com', '$2a$10$xn3LI/AjqicFYZFruO4hqfo4op2.FjeNj85j.uxj0.bK6slCJyWKO', 'ADMIN', NOW(), NOW()),
+    ('john_doe', 'John', 'Doe', '+40711111111', 'john.doe@example.com', '$2a$10$xn3LI/AjqicFYZFruO4hqfo4op2.FjeNj85j.uxj0.bK6slCJyWKO', 'USER', NOW(), NOW()),
+    ('jane_smith', 'Jane', 'Smith', '+40722222222', 'jane.smith@example.com', '$2a$10$xn3LI/AjqicFYZFruO4hqfo4op2.FjeNj85j.uxj0.bK6slCJyWKO', 'USER', NOW(), NOW()),
+    ('alex_popescu', 'Alex', 'Popescu', '+40733333333', 'alex.popescu@example.com', '$2a$10$xn3LI/AjqicFYZFruO4hqfo4op2.FjeNj85j.uxj0.bK6slCJyWKO', 'USER', NOW(), NOW()),
+    ('maria_ionescu', 'Maria', 'Ionescu', '+40744444444', 'maria.ionescu@example.com', '$2a$10$xn3LI/AjqicFYZFruO4hqfo4op2.FjeNj85j.uxj0.bK6slCJyWKO', 'USER', NOW(), NOW())
+ON CONFLICT (email) DO NOTHING;
+
+-- CARTS (Totaluri recalculate corect: John Doe avea gresit)
+INSERT INTO carts (user_id, total_price, created_at, updated_at)
+VALUES
+    ((SELECT id FROM users WHERE username='john_doe'), 2600.00, NOW(), NOW()),
+    ((SELECT id FROM users WHERE username='jane_smith'), 1300.00, NOW(), NOW()),
+    ((SELECT id FROM users WHERE username='alex_popescu'), 850.00, NOW(), NOW()),
+    ((SELECT id FROM users WHERE username='maria_ionescu'), 600.00, NOW(), NOW())
+ON CONFLICT DO NOTHING;
+
+-- CART ITEMS
+-- John Doe's cart: GPU (2200) + 2x RAM (2x200=400) = 2600
+INSERT INTO cart_items (cart_id, product_id, quantity, unit_price)
+SELECT (SELECT id FROM carts WHERE user_id=(SELECT id FROM users WHERE username='john_doe')),
+       id, 1, price FROM products WHERE sku='SKU-GPU-NVIDIA-4060';
+INSERT INTO cart_items (cart_id, product_id, quantity, unit_price)
+SELECT (SELECT id FROM carts WHERE user_id=(SELECT id FROM users WHERE username='john_doe')),
+       id, 2, price FROM products WHERE sku='SKU-RAM-KING-16G-D4-3200';
+
+-- Jane Smith's cart: GPU AMD (1300)
+INSERT INTO cart_items (cart_id, product_id, quantity, unit_price)
+SELECT (SELECT id FROM carts WHERE user_id=(SELECT id FROM users WHERE username='jane_smith')),
+       id, 1, price FROM products WHERE sku='SKU-GPU-AMD-6600';
+
+-- Alex Popescu's cart: CPU Intel (850)
+INSERT INTO cart_items (cart_id, product_id, quantity, unit_price)
+SELECT (SELECT id FROM carts WHERE user_id=(SELECT id FROM users WHERE username='alex_popescu')),
+       id, 1, price FROM products WHERE sku='SKU-CPU-INTEL-12400F';
+
+-- Maria Ionescu's cart: Motherboard ASUS (600)
+INSERT INTO cart_items (cart_id, product_id, quantity, unit_price)
+SELECT (SELECT id FROM carts WHERE user_id=(SELECT id FROM users WHERE username='maria_ionescu')),
+       id, 1, price FROM products WHERE sku='SKU-MB-ASUS-B660';
+
+
+-- ORDERS
+-- Statusuri corectate: 'NEW' -> 'PENDING'
+-- Payment Status corectat: 'PENDING' -> 'CAPTURED' (pentru ca au plati asociate)
+-- Calcule corectate: Subtotal + Shipping = GrandTotal
+INSERT INTO orders (user_id, status, subtotal, shipping_fee, tax_total, grand_total, currency, payment_status, transaction_ref,
+                    shipping_full_name, shipping_phone, shipping_address, created_at, updated_at)
+VALUES
+-- John Doe: Subtotal 2600 + Shipping 25 = 2625
+((SELECT id FROM users WHERE username='john_doe'), 'PENDING', 2600.00, 25.00, 415.13, 2625.00, 'RON', 'CAPTURED', 'TXN-JOHN-001',
+ 'John Doe', '+40711111111', 'Str. Libertatii 10, Bucuresti', NOW(), NOW()),
+
+-- Jane Smith: Subtotal 1300 + Shipping 20 = 1320
+((SELECT id FROM users WHERE username='jane_smith'), 'PENDING', 1300.00, 20.00, 207.56, 1320.00, 'RON', 'CAPTURED', 'TXN-JANE-001',
+ 'Jane Smith', '+40722222222', 'Str. Unirii 25, Cluj-Napoca', NOW(), NOW()),
+
+-- Alex Popescu: Subtotal 850 + Shipping 20 = 870
+((SELECT id FROM users WHERE username='alex_popescu'), 'PENDING', 850.00, 20.00, 135.71, 870.00, 'RON', 'CAPTURED', 'TXN-ALEX-001',
+ 'Alex Popescu', '+40733333333', 'Bd. Independentei 5, Iasi', NOW(), NOW()),
+
+-- Maria Ionescu: Subtotal 600 + Shipping 20 = 620
+((SELECT id FROM users WHERE username='maria_ionescu'), 'PENDING', 600.00, 20.00, 95.80, 620.00, 'RON', 'CAPTURED', 'TXN-MARIA-001',
+ 'Maria Ionescu', '+40744444444', 'Str. Mihai Viteazu 12, Timisoara', NOW(), NOW())
+ON CONFLICT DO NOTHING;
+
+-- ORDER ITEMS
+-- John Doe
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, vat_rate)
+SELECT (SELECT id FROM orders WHERE transaction_ref='TXN-JOHN-001'), id, 1, price, 19.00 FROM products WHERE sku='SKU-GPU-NVIDIA-4060';
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, vat_rate)
+SELECT (SELECT id FROM orders WHERE transaction_ref='TXN-JOHN-001'), id, 2, price, 19.00 FROM products WHERE sku='SKU-RAM-KING-16G-D4-3200';
+
+-- Jane Smith
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, vat_rate)
+SELECT (SELECT id FROM orders WHERE transaction_ref='TXN-JANE-001'), id, 1, price, 19.00 FROM products WHERE sku='SKU-GPU-AMD-6600';
+
+-- Alex Popescu
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, vat_rate)
+SELECT (SELECT id FROM orders WHERE transaction_ref='TXN-ALEX-001'), id, 1, price, 19.00 FROM products WHERE sku='SKU-CPU-INTEL-12400F';
+
+-- Maria Ionescu
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, vat_rate)
+SELECT (SELECT id FROM orders WHERE transaction_ref='TXN-MARIA-001'), id, 1, price, 19.00 FROM products WHERE sku='SKU-MB-ASUS-B660';
+
+
+-- PAYMENTS
+-- Provider corectat: 'CARD' -> 'NETOPIA' (sau 'STRIPE')
+-- Status corectat: 'PAID' -> 'CAPTURED'
+-- Sume corectate (Match Grand Total)
+INSERT INTO payments (order_id, provider, status, amount, currency, transaction_ref, created_at)
+VALUES
+    ((SELECT id FROM orders WHERE transaction_ref='TXN-JOHN-001'), 'NETOPIA', 'CAPTURED', 2625.00, 'RON', 'PAY-JOHN-001', NOW()),
+    ((SELECT id FROM orders WHERE transaction_ref='TXN-JANE-001'), 'STRIPE', 'CAPTURED', 1320.00, 'RON', 'PAY-JANE-001', NOW()),
+    ((SELECT id FROM orders WHERE transaction_ref='TXN-ALEX-001'), 'NETOPIA', 'CAPTURED', 870.00, 'RON', 'PAY-ALEX-001', NOW()),
+    ((SELECT id FROM orders WHERE transaction_ref='TXN-MARIA-001'), 'NETOPIA', 'CAPTURED', 620.00, 'RON', 'PAY-MARIA-001', NOW())
+ON CONFLICT DO NOTHING;
+
+-- INVOICES
+INSERT INTO invoices (invoice_number, order_id, created_at, updated_at)
+VALUES
+    ('INV-2025-001', (SELECT id FROM orders WHERE transaction_ref='TXN-JOHN-001'), NOW(), NOW()),
+    ('INV-2025-002', (SELECT id FROM orders WHERE transaction_ref='TXN-JANE-001'), NOW(), NOW()),
+    ('INV-2025-003', (SELECT id FROM orders WHERE transaction_ref='TXN-ALEX-001'), NOW(), NOW()),
+    ('INV-2025-004', (SELECT id FROM orders WHERE transaction_ref='TXN-MARIA-001'), NOW(), NOW())
+ON CONFLICT DO NOTHING;

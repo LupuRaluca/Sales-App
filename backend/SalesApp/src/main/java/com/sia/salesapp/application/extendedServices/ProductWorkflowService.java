@@ -21,6 +21,8 @@ public class ProductWorkflowService {
     private final ProductValidator productValidator;
     private final InventoryValidator inventoryValidator;
 
+    private final AuditService auditService;
+
     @Transactional
     public ProductResponse createProductWithInventory(ProductCreateRequest req, int initialQty) {
         productValidator.assertSkuUniqueOnCreate(req.sku());
@@ -55,6 +57,7 @@ public class ProductWorkflowService {
         inventoryValidator.validateCreate(p, initialQty, false);
 
         p = productRepo.save(p); // cascade salvează si inventory
+        auditService.logAction("CREATE_PRODUCT", "Product", p.getId(), "Created with qty: " + initialQty);
         return toDto(p);
     }
 
@@ -71,9 +74,11 @@ public class ProductWorkflowService {
             Inventory inv = Inventory.builder().product(p).quantityAvailable(0).build();
             p.setInventory(inv);
         }
-        p.getInventory().setQuantityAvailable(current + delta);
+        int newQuantity = current + delta;
+        p.getInventory().setQuantityAvailable(newQuantity);
 
         productRepo.save(p);
+        auditService.logAction("ADJUST_STOCK", "Product", p.getId(), "Delta: " + delta + ", New Qty: " + newQuantity);
     }
 
     private ProductResponse toDto(Product p) {
