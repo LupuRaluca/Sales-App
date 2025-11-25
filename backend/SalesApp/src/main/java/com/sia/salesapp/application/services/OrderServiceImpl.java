@@ -1,6 +1,7 @@
 
 package com.sia.salesapp.application.services;
 
+import com.sia.salesapp.application.extendedServices.OrderComputationService;
 import com.sia.salesapp.application.iServices.OrderService;
 import com.sia.salesapp.domain.entity.Order;
 import com.sia.salesapp.domain.enums.OrderStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository repo;
+    private final OrderComputationService computationService;
 
     @Override
     @Transactional
@@ -47,18 +49,23 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order inexistent"));
 
         o.setStatus(OrderStatus.valueOf(req.status()));
-        o.setSubtotal(req.subtotal());
         o.setShippingFee(req.shippingFee());
-        o.setTaxTotal(req.taxTotal());
-        o.setGrandTotal(req.grandTotal());
         o.setCurrency(req.currency());
         o.setShippingFullName(req.shippingFullName());
         o.setShippingPhone(req.shippingPhone());
         o.setShippingAddress(req.shippingAddress());
-
+        computationService.computeTotals(o);
         o = repo.save(o);
 
         return mapToResponse(o);
+    }
+
+    @Transactional
+    public void refreshOrderTotals(Long orderId) {
+        Order o = repo.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order inexistent"));
+        computationService.computeTotals(o);
+        repo.save(o);
     }
 
     @Override
