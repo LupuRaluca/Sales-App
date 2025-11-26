@@ -76,7 +76,6 @@ public class CheckoutService {
         order = orderRepo.save(order);
 
         for (OrderItem oi : order.getOrderItems()) {
-            // Folosim serviciul tau de workflow care are validari si audit
             // delta negativ = scadere stoc
             productWorkflowService.adjustStock(oi.getProduct().getId(), -oi.getQuantity());
         }

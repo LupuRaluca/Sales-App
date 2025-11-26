@@ -27,6 +27,7 @@ public class CartServiceImpl implements CartService {
                 .user(user)
                 .createdAt(req.createdAt())
                 .updatedAt(req.updatedAt())
+                .totalPrice(java.math.BigDecimal.ZERO)
                 .build());
         return new CartResponse(c.getId(), c.getUser().getId(), c.getCreatedAt(), c.getUpdatedAt());
     }
@@ -106,5 +107,19 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(total);
 
         cartRepo.save(cart);
+    }
+
+    @Override
+    public CartResponse getByUserId(Long userId) {
+        // Folosim metoda noua din repository
+        Cart c = cartRepo.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Nu există un coș activ pentru userul " + userId));
+
+        return new CartResponse(
+                c.getId(),
+                c.getUser().getId(),
+                c.getCreatedAt(),
+                c.getUpdatedAt()
+        );
     }
 }

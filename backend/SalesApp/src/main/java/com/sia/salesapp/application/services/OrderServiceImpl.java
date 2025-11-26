@@ -7,6 +7,7 @@ import com.sia.salesapp.domain.entity.Order;
 import com.sia.salesapp.domain.entity.OrderItem;
 import com.sia.salesapp.domain.entity.Product;
 import com.sia.salesapp.domain.enums.OrderStatus;
+import com.sia.salesapp.domain.enums.PaymentStatus;
 import com.sia.salesapp.infrastructure.repository.OrderRepository;
 import com.sia.salesapp.infrastructure.repository.ProductRepository;
 import com.sia.salesapp.web.dto.OrderItemRequest;
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.valueOf(req.status()))
                 .currency(req.currency() != null ? req.currency() : "RON")
                 .shippingFullName(req.shippingFullName())
+                .paymentStatus(PaymentStatus.INITIATED)
                 .shippingPhone(req.shippingPhone())
                 .shippingAddress(req.shippingAddress())
                 .orderItems(new ArrayList<>()) // Initializam lista

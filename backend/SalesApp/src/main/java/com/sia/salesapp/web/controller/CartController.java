@@ -53,4 +53,9 @@ public class CartController {
         service.addItem(userId, productId, quantity);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<CartResponse> getByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.getByUserId(userId));
+    }
 }

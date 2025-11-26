@@ -9,4 +9,5 @@ public interface CartService {
     CartResponse get(Long id);
     List<CartResponse> list();
     void addItem(Long userId, Long productId, int quantity);
+    CartResponse getByUserId(Long userId);
 }
