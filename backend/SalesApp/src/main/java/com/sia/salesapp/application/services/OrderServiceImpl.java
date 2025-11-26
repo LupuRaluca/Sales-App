@@ -4,8 +4,12 @@ package com.sia.salesapp.application.services;
 import com.sia.salesapp.application.extendedServices.OrderComputationService;
 import com.sia.salesapp.application.iServices.OrderService;
 import com.sia.salesapp.domain.entity.Order;
+import com.sia.salesapp.domain.entity.OrderItem;
+import com.sia.salesapp.domain.entity.Product;
 import com.sia.salesapp.domain.enums.OrderStatus;
 import com.sia.salesapp.infrastructure.repository.OrderRepository;
+import com.sia.salesapp.infrastructure.repository.ProductRepository;
+import com.sia.salesapp.web.dto.OrderItemRequest;
 import com.sia.salesapp.web.dto.OrderRequest;
 import com.sia.salesapp.web.dto.OrderResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +17,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,21 +27,39 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository repo;
     private final OrderComputationService computationService;
+    private final ProductRepository productRepo;
 
     @Override
     @Transactional
     public OrderResponse create(OrderRequest req) {
         Order o = Order.builder()
                 .status(OrderStatus.valueOf(req.status()))
-                .subtotal(req.subtotal())
-                .shippingFee(req.shippingFee())
-                .taxTotal(req.taxTotal())
-                .grandTotal(req.grandTotal())
-                .currency(req.currency())
+                .currency(req.currency() != null ? req.currency() : "RON")
                 .shippingFullName(req.shippingFullName())
                 .shippingPhone(req.shippingPhone())
                 .shippingAddress(req.shippingAddress())
+                .orderItems(new ArrayList<>()) // Initializam lista
+                .shippingFee(req.shippingFee() != null ? req.shippingFee() : BigDecimal.ZERO)
                 .build();
+
+        if (req.items() != null) {
+            for (OrderItemRequest itemReq : req.items()) {
+                Product p = productRepo.findById(itemReq.productId())
+                        .orElseThrow(() -> new EntityNotFoundException("Produs inexistent: " + itemReq.productId()));
+
+                OrderItem orderItem = OrderItem.builder()
+                        .order(o)
+                        .product(p)
+                        .quantity(itemReq.quantity())
+                        .unitPrice(p.getPrice())
+                        .vatRate(p.getVatRate())
+                        .build();
+
+                o.getOrderItems().add(orderItem);
+            }
+        }
+
+        computationService.computeTotals(o);
 
         o = repo.save(o);
 
@@ -48,8 +72,15 @@ public class OrderServiceImpl implements OrderService {
         Order o = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Order inexistent"));
 
-        o.setStatus(OrderStatus.valueOf(req.status()));
-        o.setShippingFee(req.shippingFee());
+        // Actualizăm câmpurile editabile
+        if (req.status() != null) {
+            o.setStatus(OrderStatus.valueOf(req.status()));
+        }
+
+        // Dacă se schimbă taxa de livrare
+        if (req.shippingFee() != null) {
+            o.setShippingFee(req.shippingFee());
+        }
         o.setCurrency(req.currency());
         o.setShippingFullName(req.shippingFullName());
         o.setShippingPhone(req.shippingPhone());

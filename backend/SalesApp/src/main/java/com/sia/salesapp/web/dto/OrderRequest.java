@@ -1,17 +1,14 @@
-
-// OrderRequest.java
 package com.sia.salesapp.web.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public record OrderRequest(
-        String status,          // va fi convertit în enum
-        BigDecimal subtotal,
-        BigDecimal shippingFee,
-        BigDecimal taxTotal,
-        BigDecimal grandTotal,
+        String status,
         String currency,
+        BigDecimal shippingFee,
         String shippingFullName,
         String shippingPhone,
-        String shippingAddress
+        String shippingAddress,
+        List<OrderItemRequest> items
 ) {}
