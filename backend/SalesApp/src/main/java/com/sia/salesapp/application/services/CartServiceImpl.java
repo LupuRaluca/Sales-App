@@ -11,6 +11,10 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,10 +73,20 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void addItem(Long userId, Long productId, int quantity) {
 
-        Cart cart = cartRepo.findAll().stream()
-                .filter(c -> c.getUser().getId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Nu există coș pentru userul " + userId));
+        Cart cart = cartRepo.findByUserId(userId)
+                .orElseGet(() -> {
+                    // Dacă nu există, creăm unul nou
+                    User user = userRepo.findById(userId)
+                            .orElseThrow(() -> new EntityNotFoundException("User inexistent"));
+
+                    return cartRepo.save(Cart.builder()
+                            .user(user)
+                            .totalPrice(BigDecimal.ZERO)
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .cartItems(new ArrayList<>())
+                            .build());
+                });
 
         var product = productRepo.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Produs inexistent"));
