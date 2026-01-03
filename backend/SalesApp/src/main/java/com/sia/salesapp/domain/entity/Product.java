@@ -82,4 +82,14 @@ public class Product {
         this.inventory = inv;
         if (inv != null) inv.setProduct(this);
     }
+
+    public java.math.BigDecimal getPriceWithVat() {
+        if (this.price == null) return java.math.BigDecimal.ZERO;
+
+        // Definim TVA-ul într-un singur loc (sau îl poți lua dintr-o clasă de constante)
+        java.math.BigDecimal vatRate = new java.math.BigDecimal("1.19");
+
+        // Returnăm prețul * 1.19
+        return this.price.multiply(vatRate).setScale(2, java.math.RoundingMode.HALF_UP);
+    }
 }

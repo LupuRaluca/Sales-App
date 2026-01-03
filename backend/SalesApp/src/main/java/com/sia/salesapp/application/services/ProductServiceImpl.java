@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -74,14 +75,12 @@ public class ProductServiceImpl implements ProductService {
     /* ===================== Helpers ===================== */
 
     private void applyFromCreate(Product p, ProductCreateRequest req) {
-        // câmpuri comune
         p.setName(req.name());
         p.setDescription(req.description());
         p.setPrice(req.price());
         p.setCurrency(req.currency());
         p.setVatRate(req.vatRate());
 
-        // relații
         Brand brand = brandRepo.findById(req.brandId())
                 .orElseThrow(() -> new EntityNotFoundException("Brand inexistent"));
         Category cat = categoryRepo.findById(req.categoryId())
@@ -91,14 +90,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void applyFromUpdate(Product p, ProductUpdateRequest req) {
-        // câmpuri comune
         p.setName(req.name());
         p.setDescription(req.description());
         p.setPrice(req.price());
         p.setCurrency(req.currency());
         p.setVatRate(req.vatRate());
 
-        // relații
         Brand brand = brandRepo.findById(req.brandId())
                 .orElseThrow(() -> new EntityNotFoundException("Brand inexistent"));
         Category cat = categoryRepo.findById(req.categoryId())
@@ -109,6 +106,24 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse toDto(Product p) {
         Integer qty = (p.getInventory() != null) ? p.getInventory().getQuantityAvailable() : null;
+
+        BigDecimal priceWithVat = BigDecimal.ZERO;
+
+        if (p.getPrice() != null) {
+            if (p.getVatRate() != null) {
+                // 1. Împărțim 19 la 100 => 0.19
+                BigDecimal vatDecimal = p.getVatRate().divide(new BigDecimal("100"));
+
+                // 2. Adunăm 1 => 1.19
+                BigDecimal multiplier = BigDecimal.ONE.add(vatDecimal);
+
+                // 3. Calculăm prețul final
+                priceWithVat = p.getPrice().multiply(multiplier).setScale(2, java.math.RoundingMode.HALF_UP);
+            } else {
+                priceWithVat = p.getPrice();
+            }
+        }
+
         return new ProductResponse(
                 p.getId(),
                 p.getSku(),
@@ -119,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
                 p.getCategory() != null ? p.getCategory().getId() : null,
                 p.getCategory() != null ? p.getCategory().getName() : null,
                 p.getPrice(),
+                priceWithVat,
                 p.getCurrency(),
                 p.getVatRate(),
                 qty

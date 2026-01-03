@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal; // <--- Asigură-te că ai acest import
+
 @Service
 @RequiredArgsConstructor
 public class ProductWorkflowService {
@@ -83,13 +85,38 @@ public class ProductWorkflowService {
 
     private ProductResponse toDto(Product p) {
         Integer qty = p.getInventory() != null ? p.getInventory().getQuantityAvailable() : null;
+
+        java.math.BigDecimal priceWithVat = java.math.BigDecimal.ZERO;
+
+        if (p.getPrice() != null) {
+            if (p.getVatRate() != null) {
+                // 1. Împărțim 19 la 100 => 0.19
+                java.math.BigDecimal vatDecimal = p.getVatRate().divide(new java.math.BigDecimal("100"));
+
+                // 2. Adunăm 1 => 1.19
+                java.math.BigDecimal multiplier = java.math.BigDecimal.ONE.add(vatDecimal);
+
+                // 3. Înmulțim Prețul cu 1.19
+                priceWithVat = p.getPrice().multiply(multiplier).setScale(2, java.math.RoundingMode.HALF_UP);
+            } else {
+                // Dacă nu e setat TVA, prețul rămâne cel de bază
+                priceWithVat = p.getPrice();
+            }
+        }
+
         return new ProductResponse(
-                p.getId(), p.getSku(), p.getName(), p.getDescription(),
+                p.getId(),
+                p.getSku(),
+                p.getName(),
+                p.getDescription(),
                 p.getBrand() != null ? p.getBrand().getId() : null,
                 p.getBrand() != null ? p.getBrand().getName() : null,
                 p.getCategory() != null ? p.getCategory().getId() : null,
                 p.getCategory() != null ? p.getCategory().getName() : null,
-                p.getPrice(), p.getCurrency(), p.getVatRate(),
+                p.getPrice(),
+                priceWithVat,
+                p.getCurrency(),
+                p.getVatRate(),
                 qty
         );
     }

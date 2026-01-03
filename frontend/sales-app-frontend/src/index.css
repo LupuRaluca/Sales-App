@@ -1,0 +1,37 @@
+:root {
+    --primary: #2563eb;       /* Albastru modern */
+    --primary-hover: #1d4ed8;
+    --bg-color: #f8fafc;      /* Gri foarte deschis pentru fundal */
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --radius: 8px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Resetare input-uri pentru a elimina fundalul gri din screenshot */
+input, button {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+}

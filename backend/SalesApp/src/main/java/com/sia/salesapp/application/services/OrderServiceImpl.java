@@ -11,16 +11,18 @@ import com.sia.salesapp.domain.enums.PaymentStatus;
 import com.sia.salesapp.infrastructure.repository.OrderRepository;
 import com.sia.salesapp.infrastructure.repository.ProductRepository;
 import com.sia.salesapp.web.dto.OrderItemRequest;
+import com.sia.salesapp.web.dto.OrderItemResponse;
 import com.sia.salesapp.web.dto.OrderRequest;
 import com.sia.salesapp.web.dto.OrderResponse;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repo;
     private final OrderComputationService computationService;
     private final ProductRepository productRepo;
+    private final OrderRepository orderRepository;
 
     @Override
     @Transactional
@@ -121,19 +124,33 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
     }
 
-    private OrderResponse mapToResponse(Order o) {
+    @Override
+    @Transactional(readOnly = true) // Optimizare pentru citire
+    public List<OrderResponse> getUserOrders(Long userId) {
+
+        List<Order> orders = orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+
+        return orders.stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+    // Helper pentru curățenie
+    private OrderResponse mapToResponse(Order order) {
+        List<OrderItemResponse> items = order.getOrderItems().stream()
+                .map(item -> new OrderItemResponse(
+                        item.getProduct().getName(),
+                        item.getQuantity(),
+                        item.getUnitPrice()
+                ))
+                .collect(Collectors.toList());
+
         return new OrderResponse(
-                o.getId(),
-                o.getStatus().name(),
-                o.getSubtotal(),
-                o.getShippingFee(),
-                o.getTaxTotal(),
-                o.getGrandTotal(),
-                o.getCurrency(),
-                o.getShippingFullName(),
-                o.getShippingPhone(),
-                o.getShippingAddress(),
-                o.getCreatedAt()
+                order.getId(),
+                order.getCreatedAt(),
+                order.getStatus().name(),
+                order.getGrandTotal(),
+                items,
+                order.getShippingAddress()
         );
     }
 }

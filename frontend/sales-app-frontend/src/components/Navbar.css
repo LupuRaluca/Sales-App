@@ -1,0 +1,138 @@
+/* Navbar general - Gradient închis și efect de sticlă */
+.navbar {
+    background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    color: white;
+}
+
+/* Logo - Gradient de text pentru impact */
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Zona de user */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.2;
+    margin-right: 10px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    padding-right: 20px;
+}
+
+.welcome-text {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: white;
+}
+
+/* Link-ul de Coș - Stil "Pastilă" */
+.cart-link {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cart-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Butonul de Logout - Roșu și distinct */
+.btn-logout {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4);
+    filter: brightness(1.1);
+}
+
+.btn-logout:active {
+    transform: translateY(0);
+}
+
+/* Link Login (când nu ești logat) */
+.login-link {
+    color: white;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: #2563eb;
+    transition: background 0.2s;
+}
+
+.login-link:hover {
+    background-color: #1d4ed8;
+}
+
+/* Responsive simplu */
+@media (max-width: 600px) {
+    .user-info { display: none; } /* Ascundem userul pe mobil pt spațiu */
+    .nav-links { gap: 10px; }
+}
+
+.cart-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-badge {
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}

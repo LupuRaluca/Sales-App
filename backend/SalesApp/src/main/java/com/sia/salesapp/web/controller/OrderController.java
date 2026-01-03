@@ -41,4 +41,10 @@ public class OrderController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId) {
+        OrderService orderService;
+        return ResponseEntity.ok(service.getUserOrders(userId));
+    }
 }

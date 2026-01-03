@@ -7,4 +7,5 @@ public interface OrderService {
     void delete(Long id);
     OrderResponse get(Long id);
     List<OrderResponse> list();
+    List<OrderResponse> getUserOrders(Long userId);
 }

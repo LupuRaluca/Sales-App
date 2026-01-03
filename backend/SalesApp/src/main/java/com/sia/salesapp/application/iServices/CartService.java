@@ -10,4 +10,7 @@ public interface CartService {
     List<CartResponse> list();
     void addItem(Long userId, Long productId, int quantity);
     CartResponse getByUserId(Long userId);
+
+    void removeItem(Long userId, Long productId); // Șterge de tot rândul
+    void updateItemQuantity(Long userId, Long productId, int newQuantity); // Modifică cantitatea
 }

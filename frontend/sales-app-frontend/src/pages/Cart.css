@@ -1,0 +1,211 @@
+.cart-page {
+    padding: 20px 0;
+}
+
+.cart-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--text-main);
+}
+
+.cart-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* --- Lista de Produse (Stânga) --- */
+.cart-items-container {
+    flex: 2; /* Ocupă 2/3 din spațiu */
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 20px;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-image-placeholder {
+    width: 80px;
+    height: 80px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #94a3b8;
+    font-size: 1.5rem;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--text-main);
+}
+
+.item-price {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Control Cantitate */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.btn-qty {
+    background: #f8fafc;
+    border: none;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-qty:hover {
+    background: #e2e8f0;
+}
+
+.qty-display {
+    padding: 0 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Buton Ștergere */
+.btn-remove {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-remove:hover {
+    background: #fecaca;
+}
+
+/* --- Sumar Comandă (Dreapta) --- */
+.cart-summary {
+    flex: 1; /* Ocupă 1/3 din spațiu */
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    position: sticky;
+    top: 100px;
+}
+
+.summary-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+.summary-total {
+    font-weight: 800;
+    color: var(--text-main);
+    font-size: 1.3rem;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--border);
+}
+
+/* Formular Livrare */
+.shipping-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.shipping-input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.btn-checkout {
+    width: 100%;
+    padding: 14px;
+    background-color: #16a34a; /* Verde pentru checkout */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-checkout:hover {
+    background-color: #15803d;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cart-layout {
+        flex-direction: column;
+    }
+    .cart-summary {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+.btn-qty:disabled {
+    background-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.stock-warning {
+    font-size: 0.75rem;
+    color: #ea580c; /* Portocaliu de avertizare */
+    margin-top: 4px;
+    font-weight: 600;
+}
+
+.item-quantity-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

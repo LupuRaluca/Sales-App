@@ -38,12 +38,14 @@ public class CartController {
     }
 
     @PostMapping("/{userId}/checkout")
-    public ResponseEntity<String> checkout(@PathVariable Long userId,
-                                           @RequestParam String address,
-                                           @RequestParam String name,
-                                           @RequestParam String phone) {
+    public ResponseEntity<Long> checkout(
+                                          @PathVariable Long userId,
+                                          @RequestParam String address,
+                                          @RequestParam String name,
+                                          @RequestParam String phone
+    ) {
         Long orderId = checkoutService.placeOrderFromCart(userId, address, name, phone);
-        return ResponseEntity.ok("Comanda plasata cu succes! ID: " + orderId);
+        return ResponseEntity.ok(orderId);
     }
 
     @PostMapping("/{userId}/items")
@@ -57,5 +59,21 @@ public class CartController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<CartResponse> getByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(service.getByUserId(userId));
+    }
+
+    // Endpoint pentru ȘTERGERE COMPLETĂ (Butonul Trash)
+    @DeleteMapping("/{userId}/items/{productId}")
+    public ResponseEntity<Void> removeItem(@PathVariable Long userId, @PathVariable Long productId) {
+        service.removeItem(userId, productId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint pentru MODIFICARE CANTITATE (+ / -)
+    @PutMapping("/{userId}/items/{productId}")
+    public ResponseEntity<Void> updateQuantity(@PathVariable Long userId,
+                                               @PathVariable Long productId,
+                                               @RequestParam int quantity) {
+        service.updateItemQuantity(userId, productId, quantity);
+        return ResponseEntity.ok().build();
     }
 }

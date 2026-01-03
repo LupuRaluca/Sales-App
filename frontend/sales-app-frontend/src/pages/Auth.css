@@ -1,0 +1,136 @@
+.auth-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+}
+
+.auth-container h2 {
+    text-align: center;
+    color: var(--text-main);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: white; /* Asigură fundal alb */
+    color: var(--text-main);
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-auth:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.auth-link a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+.error-msg {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    border: 1px solid #fecaca;
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); /* Gradient subtil */
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+
+    /* Umbra și tranziția fac magia */
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px); /* Se ridică puțin */
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); /* Umbra crește */
+    filter: brightness(1.1);
+}
+
+.btn-auth:active {
+    transform: translateY(0); /* Se lasă jos la click */
+    box-shadow: 0 2px 4px -1px rgba(37, 99, 235, 0.3);
+}
+
+/* Bonus: Fix pentru input-urile gri din screenshot (Autofill browser) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: var(--text-main) !important;
+}
