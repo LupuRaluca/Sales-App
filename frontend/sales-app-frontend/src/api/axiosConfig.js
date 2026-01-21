@@ -10,7 +10,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('auth_token'); // Vom salva aici token-ul "Basic ..."
+        const token = localStorage.getItem('auth_token'); // salvam token-ul
         if (token) {
             config.headers['Authorization'] = token;
         }
